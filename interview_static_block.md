@@ -91,3 +91,12 @@ Isolate classes under test, avoid global state where possible, and use separate 
 ## Q22. What are the trade-offs between performing work in a static block versus using a static factory or dependency injection at startup?
 Answer:
 Static blocks are simple and guaranteed to run once but are harder to control, test, and recover from failures. Static factories or DI frameworks offer better configurability, testability, and error handling, at the cost of slightly more boilerplate and lifecycle management.
+
+
+## In CarMain.java, how it is accessing Car class without "import" statement?
+
+Because both classes are in the same package.
+
+- If CarMain and Car are in the default package (no package declaration), they can reference each other without imports.
+- If they’re in a named package, as long as both declare the same package, no import is needed for classes in the same package.
+- Imports are only required for classes from different packages (except java.lang, which is implicitly imported).
