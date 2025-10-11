@@ -21,5 +21,8 @@ public class MarvelHeroDemo {
     private static void invokeSuperHero(SuperHero superHero) {
         System.out.println(superHero.usePower());
         System.out.println(superHero.stopVillain('N'));
+        System.out.println(superHero.trackLiveLocation());
+        System.out.println(SuperHero.commonCharacterastics());
+        System.out.println(SpiderMan.commonCharacteristics());
     }
 }

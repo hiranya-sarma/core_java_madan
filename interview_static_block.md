@@ -100,3 +100,14 @@ Because both classes are in the same package.
 - If CarMain and Car are in the default package (no package declaration), they can reference each other without imports.
 - If they’re in a named package, as long as both declare the same package, no import is needed for classes in the same package.
 - Imports are only required for classes from different packages (except java.lang, which is implicitly imported).
+
+## Explain “Person.super.walk();”
+“Person.super.walk();” is how a class or interface resolves a default-method conflict by explicitly calling the default implementation from a specific superinterface.
+
+- Context: If a type implements multiple interfaces that both define a default method with the same signature (here, walk()), the compiler forces you to resolve the ambiguity.
+- Syntax meaning:
+    - Person: the interface whose default method you want.
+    - super: refer to that interface’s default implementation (not an overridden one in the current type).
+    - walk(): invoke that specific default method.
+
+So inside the overriding method, calling Person.super.walk() ensures the Person interface’s default walk() runs, even if other interfaces also define walk() or you provide your own logic before/after that call.

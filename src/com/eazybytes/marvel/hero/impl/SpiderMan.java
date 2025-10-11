@@ -24,4 +24,20 @@ public class SpiderMan implements SuperHero {
         }
 
     }
+
+    @Override
+   public String trackLiveLocation() {
+        String liveLocation = "London";
+        System.out.println("I am in: " + liveLocation);
+        return liveLocation;
+    }
+
+    public static String commonCharacteristics() {
+        return "Spiderman has superhuman strength, superhuman agility, superhuman speed, superhuman strength, superhuman durability, and superhuman power";
+    }
+
+    @Override
+    public void walk() {
+        System.out.println("Spider Man is walking");
+    }
 }
