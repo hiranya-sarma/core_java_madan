@@ -43,7 +43,11 @@ public class MapCustomObjectExample {
         users.add(new User(3, "Rajesh", "123456", "rajesh@example.com"));
         users.add(new User(4, "Rahul", "123456", "rahul@example.com"));
 
-        List<String> emailIds = users.stream().map(user ->user.getEmail()).toList();
+        List<String> emailIds = users.stream()
+                .peek(user -> System.out.println("Before map: "+user.toString()))
+                .map(user ->user.getEmail())
+                .peek(user -> System.out.println("After map: "+user.toString()))
+                .toList();
         System.out.println(emailIds);
     }
 }
