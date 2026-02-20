@@ -1,5 +1,8 @@
 package com.eazybytes.streams;
 
+import java.util.ArrayList;
+import java.util.List;
+
 class User{
     private int id;
     private String username;
@@ -34,5 +37,13 @@ class User{
 public class MapCustomObjectExample {
     public static void main(String[] args) {
 
+        List<User> users = new ArrayList<>();
+        users.add(new User(1, "Ramesh", "123456", "ramesh@example.com"));
+        users.add(new User(2, "Ravi", "123456", "ravi@example.com"));
+        users.add(new User(3, "Rajesh", "123456", "rajesh@example.com"));
+        users.add(new User(4, "Rahul", "123456", "rahul@example.com"));
+
+        List<String> emailIds = users.stream().map(user ->user.getEmail()).toList();
+        System.out.println(emailIds);
     }
 }
