@@ -1,4 +1,4 @@
-package com.eazybytes.collection;
+package com.eazybytes.collection.arraylist;
 
 import java.util.ArrayList;
 import java.util.Iterator;
