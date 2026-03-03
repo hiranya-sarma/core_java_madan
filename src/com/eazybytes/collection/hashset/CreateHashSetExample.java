@@ -13,6 +13,7 @@ public class CreateHashSetExample {
         daysOfWeek.add("Friday");
         daysOfWeek.add("Saturday");
         daysOfWeek.add("Sunday");
+        daysOfWeek.add("sunday");  //lowercase but will be added, same for TreeSet
         System.out.println(daysOfWeek);
 
         //Handle duplicates
