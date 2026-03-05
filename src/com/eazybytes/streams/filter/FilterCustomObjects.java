@@ -1,8 +1,7 @@
-package com.eazybytes.streams;
+package com.eazybytes.streams.filter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 class Product {
     private String name;
