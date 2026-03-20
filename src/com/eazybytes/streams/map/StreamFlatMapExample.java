@@ -21,7 +21,7 @@ public class StreamFlatMapExample {
                 .distinct();
 
         System.out.println(flattenedStream.toList());
-
+        System.out.println("============================================================");
         //Collecting nested arrayas into a single list
         String[][] nestedArray = new String[][]{
                 {"a", "b", "c"},
