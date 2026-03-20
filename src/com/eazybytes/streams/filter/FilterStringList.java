@@ -1,4 +1,4 @@
-package com.eazybytes.streams;
+package com.eazybytes.streams.filter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
