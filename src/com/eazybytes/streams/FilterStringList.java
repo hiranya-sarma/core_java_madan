@@ -21,5 +21,9 @@ public class FilterStringList {
         //Using Stream API
         List<String> filteredFruits1 = fruits.stream().filter(fruit -> fruit.equals("Banana")).toList();
         System.out.println(filteredFruits1);
+
+        List<Integer> numbers = Arrays.asList(1,2,3,4,5,6,7,8,9,10);
+        List<Integer> evenNumbers = numbers.stream().filter(num -> num %2 == 0).toList();
+        System.out.println(evenNumbers);
     }
 }
