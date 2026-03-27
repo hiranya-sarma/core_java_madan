@@ -1,0 +1,184 @@
+For "a = student" part, what actually happening behind?
+====================================================================================================
+This line is the main confusion point in Java pass-by-value:
+a = student;
+
+To understand what happens behind the scenes, you must think in terms of
+✅ stack
+✅ heap
+✅ reference values
+✅ copying of reference (not object)
+
+Let's go very deep step-by-step.
+
+✅ Original code (focus part)
+static void fun(Student a){
+    Student student = new Student();
+    student.id = 2;
+    a = student;
+}
+
+Called from:
+
+Student x = new Student();
+x.id = 1;
+fun(x);
+✅ Step 1 — Object created in main
+Student x = new Student();
+x.id = 1;
+
+Memory:
+
+Heap:
+object1 → Student(id=1)
+
+Stack(main):
+x → object1
+
+Here x stores a reference value (address of object1).
+
+Example (imaginary address):
+
+x = 1001
+✅ Step 2 — Call fun(x)
+fun(x);
+
+Java copies the reference value.
+
+a = copy of x
+
+Memory now:
+
+Stack(main):
+x → 1001 → object1
+
+Stack(fun):
+a → 1001 → object1
+
+Important:
+
+✔ same object
+✔ different variables
+✔ reference copied
+
+✅ Step 3 — Create new object inside fun
+Student student = new Student();
+student.id = 2;
+
+Memory:
+
+Heap:
+object1 → id=1
+object2 → id=2
+
+Stack(fun):
+a → object1
+student → object2
+
+Example addresses:
+
+object1 = 1001
+object2 = 2002
+a = 1001
+student = 2002
+✅ Step 4 — a = student
+
+This line:
+
+a = student;
+
+Means:
+
+copy value of student into a
+
+NOT:
+
+❌ not copying object
+❌ not modifying object1
+❌ not changing x
+
+Only reference value changes.
+
+Before:
+
+a = 1001
+student = 2002
+
+After:
+
+a = 2002
+student = 2002
+
+Memory now:
+
+Stack(main):
+x → 1001 → object1
+
+Stack(fun):
+a → 2002 → object2
+student → 2002 → object2
+
+So a stopped pointing to object1.
+
+This is the key.
+
+✅ Step 5 — fun() ends
+
+Stack of fun removed.
+
+Stack(main):
+x → 1001 → object1
+
+object2 has no reference → eligible for GC.
+
+✅ Why x did not change
+
+Because Java passed:
+
+value of reference
+
+NOT
+
+reference itself
+
+Meaning:
+
+x ----copy----> a
+
+NOT
+
+x ----same variable---- a
+✅ Real life analogy
+
+Think like this:
+
+x = address of house A
+
+You give copy of address to friend:
+
+a = address of house A
+
+Then friend writes:
+
+a = address of house B
+
+Did your address change?
+
+❌ No
+
+Only friend's paper changed.
+
+✅ Most important rule
+a = student;
+
+means
+
+copy reference value
+
+NOT
+
+change original reference
+✅ Interview one-line answer
+
+a = student reassigns the local reference variable a to a new object.
+It does not affect the original reference because Java passes object references by value.
