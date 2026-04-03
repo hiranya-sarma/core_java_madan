@@ -1,0 +1,78 @@
+The exception means a reader thread is trying to access an index that doesn’t exist yet. In your multi-threaded example, readTask calls list.get(i) immediately while writeTask is still populating the list. Because threads run concurrently, the read thread can run first (or faster) and attempt list.get(1) when the list size is still 1 (only index 0 available), causing ArrayIndexOutOfBoundsException.
+
+Why CopyOnWriteArrayList doesn’t prevent this:
+- CopyOnWriteArrayList makes iteration safe against concurrent modification, but it does not make random index access safe when the index may not yet exist. get(i) still requires i < size() at the moment of the call.
+
+Long-term fixes (avoid race on index access):
+- Option A: Start reading only after writing completes (simple ordering).
+- Option B: Make the reader poll safely with bounds checks.
+- Option C: Use a blocking structure (e.g., LinkedBlockingQueue) and take() items. Since you prefer code-only fixes without adding libraries, we’ll stick to A or B using existing classes.
+
+Below are two robust approaches. Pick one.
+
+1) Enforce ordering (reader starts after writer finishes)
+- Simple and deterministic. No races.
+
+2) Safe polling with bounds checks (reader tolerates concurrent writes)
+- Reader checks size() before get(i) and waits/retries until the element exists.
+
+Fixed code (safe polling; no extra libraries, Java 21)
+
+```java
+public class CopyOnWriteArrayListMultiThreaded {
+    public static void main(String[] args) {
+        CopyOnWriteArrayList<Integer> list = new CopyOnWriteArrayList<>();
+
+        Runnable writeTask = () -> {
+            for (int i = 0; i < 5; i++) {
+                list.add(i);
+                System.out.println("Added " + i);
+                try {
+                    Thread.sleep(10); // simulate work, increase interleaving
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    return;
+                }
+            }
+        };
+
+        Runnable readTask = () -> {
+            int i = 0;
+            while (i < 5) {
+                int currentSize = list.size();
+                if (i < currentSize) {
+                    System.out.println("Read " + list.get(i));
+                    i++;
+                } else {
+                    try {
+                        Thread.sleep(5); // backoff until the next element is available
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        return;
+                    }
+                }
+            }
+        };
+
+        Thread t1 = new Thread(writeTask, "Writer");
+        Thread t2 = new Thread(readTask, "Reader");
+        t1.start();
+        t2.start();
+
+        try {
+            t1.join();
+            t2.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+
+Alternative simple ordering version (reader starts after writer)
+- Replace the thread start/join section with:
+- Start t1 (writer), join it, then start t2 (reader) and join it.
+
+Name: AI Assistant

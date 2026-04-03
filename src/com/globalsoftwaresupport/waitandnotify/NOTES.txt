@@ -1,0 +1,43 @@
+Process2 class,
+
+Here’s what the modified code is doing and why it fixes the issue:
+
+- Dedicated monitor: It introduces a private final Object lock. Both wait and notifyAll are always called while synchronized on this same lock. This guarantees the current thread owns the monitor when calling wait/notify, preventing IllegalMonitorStateException.
+
+- Explicit condition: It adds a boolean produced to represent the condition that the producer is waiting for. This makes the coordination explicit instead of “just wait then notify.”
+
+- Proper waiting pattern: In produce, it uses:
+  - synchronized (lock) to acquire the monitor.
+  - while (!produced) lock.wait(); to wait until the condition is true.
+    - while (not if) is critical to handle spurious wakeups and re-check the condition after being notified.
+  - After resuming, it prints and then resets produced = false if reuse is intended (shown as a comment area).
+
+- Correct signaling: In consume,
+  - synchronized (lock) to acquire the same monitor.
+  - Sets produced = true to satisfy the condition.
+  - Calls lock.notifyAll() to wake any waiting thread(s). notifyAll is preferred for robustness if the code evolves to multiple waiters.
+
+- Thread interruption: In main, when catching InterruptedException, it restores the interrupt status with Thread.currentThread().interrupt() before rethrowing, which is the correct long-term practice.
+
+- Ordering: consume sleeps briefly to let produce start and block on wait; this is just to make output deterministic for a demo, not required for correctness since the condition/loop pattern is used.
+
+Net effect:
+- Both threads coordinate on the same lock.
+- Waiting is safe, condition-based, and immune to spurious wakeups.
+- No IllegalMonitorStateException, and the program’s behavior is predictable and correct.
+============================================================================================================================================================
+What is the difference between wait and sleep?
+Let's discuss the difference between sleep and wait. They may seem to be very similar but there are fundamental differences between them.
+
+you call wait on the Object while on the other hand you call sleep on the Thread itself
+
+wait can be interrupter (this is why we need the InterruptedException) while on the other hand sleep can not
+
+wait (and notify) must happen in a synchronized  block on the monitor object whereas sleep does not
+
+sleep operation does not release the locks it holds while on the other hand wait releases the lock on the object that wait() is called on
+
+So as you can see there are some differences between wait and sleep operations!
+
+
+

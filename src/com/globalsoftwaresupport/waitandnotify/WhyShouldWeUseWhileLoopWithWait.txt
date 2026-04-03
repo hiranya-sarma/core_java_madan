@@ -1,0 +1,172 @@
+Great question 👍 — this is one of the most important rules in Java concurrency.
+
+Always use while with wait() — never if.
+
+Let’s understand this step by step, with:
+1️⃣ Why this rule exists
+2️⃣ Beginner example
+3️⃣ Intermediate example (real-world scenario)
+
+🧠 1️⃣ The core reason (very important)
+
+A thread can wake up from wait() even when the condition is still false.
+
+This can happen because of:
+
+Spurious wakeups (JVM/OS behavior)
+Wrong thread notified
+Multiple threads competing
+
+👉 So after waking up, the thread must re-check the condition
+
+That’s why:
+
+while (conditionNotMet) {
+    wait();
+}
+
+NOT:
+
+if (conditionNotMet) {
+    wait(); // ❌ unsafe
+}
+🟢 2️⃣ Beginner Example (Single Producer–Consumer)
+❌ WRONG using if
+class Shared {
+    private boolean available = false;
+
+    public synchronized void consume() throws InterruptedException {
+        if (!available) {
+            wait(); // ❌ only checked once
+        }
+
+        System.out.println("Consumed");
+        available = false;
+    }
+
+    public synchronized void produce() {
+        available = true;
+        notify();
+    }
+}
+🧪 What can go wrong?
+Step-by-step
+1. Consumer enters → available = false
+2. Consumer calls wait()
+
+3. Producer produces → notify()
+
+4. Consumer wakes up
+   BUT before it runs, another thread may change state
+
+5. Consumer continues WITHOUT re-checking condition ❌
+
+➡ Consumer may consume when nothing is available
+
+✅ CORRECT using while
+public synchronized void consume() throws InterruptedException {
+    while (!available) {
+        wait(); // keep checking
+    }
+
+    System.out.println("Consumed");
+    available = false;
+}
+🧠 Why this works
+Consumer wakes up
+↓
+Checks condition again
+↓
+If still false → waits again
+↓
+If true → proceeds safely
+🟡 3️⃣ Intermediate Example (Multiple Consumers)
+
+Now let’s see a real problem.
+
+❌ WRONG with if (multiple consumers)
+class SharedResource {
+    private int data;
+    private boolean available = false;
+
+    public synchronized void consume() throws InterruptedException {
+        if (!available) {
+            wait(); // ❌ dangerous
+        }
+
+        System.out.println(Thread.currentThread().getName()
+                + " consumed " + data);
+        available = false;
+    }
+
+    public synchronized void produce(int value) {
+        data = value;
+        available = true;
+        notifyAll();
+    }
+}
+🧪 Problem scenario
+Step-by-step
+Consumer-1 → waiting
+Consumer-2 → waiting
+
+Producer → produces data
+Producer → notifyAll()
+
+Consumer-1 wakes ✔
+Consumer-2 wakes ✔
+
+Now:
+
+Consumer-1 runs → consumes → available = false
+Consumer-2 runs → DOES NOT CHECK AGAIN ❌
+Consumer-2 also consumes ❌
+
+➡ Same data consumed twice → BUG
+
+✅ FIX using while
+public synchronized void consume() throws InterruptedException {
+    while (!available) {
+        wait();
+    }
+
+    System.out.println(Thread.currentThread().getName()
+            + " consumed " + data);
+    available = false;
+}
+🧠 Now what happens?
+Consumer-1 wakes → consumes ✔
+Consumer-2 wakes → checks condition again
+available = false → goes back to wait ✔
+
+✔ Correct behavior
+✔ No duplicate consumption
+
+🔐 4️⃣ Visual memory trick
+wait() → wake up → CHECK AGAIN
+
+So always:
+
+while (condition not true)
+    wait();
+⚠ 5️⃣ Reasons you MUST use while
+Reason	Explanation
+Spurious wakeup	Thread wakes randomly
+notifyAll()	Many threads wake
+Wrong thread wakes	Condition not satisfied
+Race condition	State changes before execution
+🧠 Beginner rule (memorize this)
+wait() NEVER trusts wake-up
+always re-check condition
+🎯 Final takeaway
+
+while ensures correctness by re-checking the condition after every wake-up — if does not.
+
+If you want next, I can:
+
+🧪 Show a real bug demo using if
+🔄 Convert this to BlockingQueue (modern approach)
+⚖ Compare with Condition.await()
+🧵 Explain spurious wakeups deeply
+
+Just say 👍
