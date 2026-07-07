@@ -2,6 +2,7 @@ package com.eazybytes.collection.linkedlist;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 public class IteratingOverLinkedListExample {
     public static void main(String[] args) {
@@ -41,5 +42,75 @@ public class IteratingOverLinkedListExample {
 
         System.out.println("\n using java 8 forEach and lambda expression");
         fruits.forEach((fruit)-> System.out.println(fruit));
+        System.out.println("\n-----------------------------------------------\n");
+
+        LinkedList<String> questions = new LinkedList<>();
+        questions.add("Question 1");
+        questions.add("Question 2");
+        questions.add("Question 3");
+        questions.add("Question 4");
+        questions.add("Question 5");
+        System.out.println("Original Questions:");
+        questions.forEach(System.out::println);
+
+        // Iterator starts at beginning
+        ListIterator<String> iterator = questions.listIterator();
+        // Move iterator to Question 3
+        while (iterator.hasNext()) {
+            String current = iterator.next();
+            if(current.equals("Question 3")){
+                // Insert immediately after Question 3
+                iterator.add("New Question 3A");
+                // Move to next element (Question 4)
+                if (iterator.hasNext()) {
+                    String next = iterator.next();
+                    iterator.remove();
+                }
+                break;
+            }
+        }
+        System.out.println("\nAfter modifications:");
+        questions.forEach(System.out::println);
+
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
