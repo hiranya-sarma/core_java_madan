@@ -26,6 +26,7 @@ public class Main {
 
         //get the middle element
         System.out.println("get 2nd element: "+myLinkedList.get(1).value);
+        System.out.println("get 1st element: "+myLinkedList.get(0).value);
         System.out.println("-----------------------------------------------------");
         //set
       //  myLinkedList.set(1, 100);
