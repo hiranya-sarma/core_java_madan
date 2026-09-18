@@ -11,6 +11,10 @@ public class Test {
         fun(x);
         System.out.println(x.id);
 
+        MyChild myChild = new MyChild();
+        MyChild.show();
+        MyParent.show();
+
     }
     static void fun(Student a){
         Student student = new Student();
