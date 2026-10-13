@@ -1,4 +1,4 @@
-package com.chadderby.designpatterns.factory;
+package com.chadderby.designpatterns.creational.factory;
 
 public class MainApp {
 
