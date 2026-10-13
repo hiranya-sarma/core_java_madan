@@ -53,9 +53,13 @@ public class Meal{
     public String toString() {
         return "Meal{" +
                 "burger=" + burger +
-                ", fries=" + fries +
-                ", drink=" + drink +
+                ", fries=" + displayValue(fries) +
+                ", drink=" + displayValue(drink) +
                 '}';
+    }
+
+    private String displayValue(Object value){
+        return Objects.toString(value, "None");
     }
 
     //Getters to access values set via the builder

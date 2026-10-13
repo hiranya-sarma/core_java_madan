@@ -9,6 +9,12 @@ public class MainApp {
                 .build();
         System.out.println(meal1);
 
+        //Create Meal with required burger and optional fries
+        Meal meal3 = new Meal.Builder(Burger.HAMBURGER)
+                .fries(Fries.SWEET_POTATO_FRIES)
+                .build();
+        System.out.println(meal3);
+
         //Create Meal with required burger and optional drink,fries
         Meal meal2 = new Meal.Builder(Burger.CHEESE_BURGER)
                 .drink(Drink.LEMONADE)
