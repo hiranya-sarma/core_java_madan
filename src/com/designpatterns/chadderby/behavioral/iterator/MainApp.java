@@ -14,7 +14,7 @@ public class MainApp {
         PatternIterator<Course> courseIterator = courseCatalog.reverseIterator();
         while (courseIterator.hasNext()) {
             Course course = courseIterator.next();
-            System.out.println(course.getName() + courseIterator.);
+            System.out.println(course.getName());
         }
 
 
