@@ -75,6 +75,13 @@ public class LinkedList {
         }
     }
 
+    /**
+     *In general, Stacks and Queues can be implemented using Arrays and Linked Lists
+     * A LinkedList can be used to implement a Stack or Queue.
+     * But Stack and Queue don't require LinkedList specifically.
+     * You could implement LIFO behavior with ArrayDeque, LinkedList, or another suitable structure.
+     * compare enqueue() of Queue with append() of LL
+     */
     public void append(int value) {
         Node newNode = new Node(value);
         if (length == 0) {
@@ -126,6 +133,9 @@ public class LinkedList {
         length++;
     }
 
+    /*
+    * compare dequeue() of Queue with removeFirst() of LL
+    * */
     public Node removeFirst() {
         if (length == 0) return null;
         Node temp = head;

@@ -1,3 +1,13 @@
+In most cases, List<T> is more useful. LinkedList<T> will have less cost when adding/removing items in the middle of the list, whereas List<T> can only cheaply add/remove at the end of the list.
+
+LinkedList<T> is only at it's most efficient if you are accessing sequential data (either forwards or backwards) - random access is relatively expensive since it must walk the chain each time (hence why it doesn't have an indexer). However, because a List<T> is essentially just an array (with a wrapper) random access is fine.
+
+List<T> also offers a lot of support methods - Find, ToArray, etc; however, these are also available for LinkedList<T> with .NET 3.5/C# 3.0 via extension methods - so that is less of a factor.
+
+https://www.reddit.com/r/learnprogramming/comments/1vwt24/java_question_do_people_actually_use_stacksqueues/
+
+-------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------
 In the `removeLast()` method, the `while` loop is necessary in its current form because it traverses the linked list to find the last node (`temp`) and the second-to-last node (`pre`) before removing the last.
 
 ### Why the `while` loop is needed here:
