@@ -1,5 +1,6 @@
 package com.headeasylabs.arrays;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,6 +48,32 @@ public class VariableAssignments {
         // 3. Passing an existing array
         Integer[] numbers = {2, 5, 8, 9};
         List<Integer> list3 = Arrays.asList(numbers);
+
+        /*
+        List<? super Integer> list1 = new ArrayList<Integer>();  // Valid
+        List<? super Integer> list2 = new ArrayList<Number>();   // Valid
+        List<? super Integer> list3 = new ArrayList<Object>();   // Valid
+         */
+        List<? super Integer> list4 = new ArrayList<Number>();
+        /*
+        This is valid because Integer extends Number, and Java performs autoboxing:
+        Number n = Integer.valueOf(12);
+
+        Compile-time error
+        list4.add(n);
+        Because n is declared as Number, not Integer.
+
+        The compiler only guarantees that the list can accept Integer values or their subtypes.
+        It cannot guarantee that an arbitrary Number is an Integer.
+        For example, Number could refer to a Double, Float, or Long.
+         */
+        Number n=12;
+        Integer i=67;
+       // list4.add(n);
+        list4.add(i);
+
+        List<Integer> p = new ArrayList<>();
+        List q = p;
 
     }
 }
