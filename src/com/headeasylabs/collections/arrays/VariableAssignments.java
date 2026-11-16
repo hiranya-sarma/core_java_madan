@@ -1,4 +1,4 @@
-package com.headeasylabs.arrays;
+package com.headeasylabs.collections.arrays;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package com.headeasylabs.set;
+package com.headeasylabs.collections.set;
 
 public class Employee implements Comparable {
     private String name;

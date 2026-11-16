@@ -1,4 +1,4 @@
-package com.headeasylabs.set;
+package com.headeasylabs.collections.set;
 
 import java.util.Collections;
 import java.util.LinkedHashSet;

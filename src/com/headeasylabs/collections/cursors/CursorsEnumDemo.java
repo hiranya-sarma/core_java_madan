@@ -1,4 +1,4 @@
-package com.headeasylabs.cursors;
+package com.headeasylabs.collections.cursors;
 
 import java.util.Enumeration;
 import java.util.Scanner;
