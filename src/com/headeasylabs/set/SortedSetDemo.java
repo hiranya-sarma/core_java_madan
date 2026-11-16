@@ -15,7 +15,7 @@ public class SortedSetDemo {
         numbers1.add(30);
 
         System.out.println(numbers1);
-
+        // [10, 20, 30, 40, 50]
         SortedSet<Integer> numbers = new TreeSet<>();
         numbers.add(50);
         numbers.add(10);
@@ -24,7 +24,7 @@ public class SortedSetDemo {
         numbers.add(30);
 
         System.out.println(numbers);
-
+        //[10, 20, 30, 40, 50]
         System.out.println(numbers.first());
         // 10
 
